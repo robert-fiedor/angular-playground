@@ -12,31 +12,9 @@
 <body ng-app="app">
 
 <div ng-controller="ctl">
-    <div>Normal Mode single select</div>
-    <question>
-        <div ng-bind="questionStem"></div>
-        <div ng-repeat="answerChoice in answerChoices">
-            <input type='radio' name='one' single-select-answer answer-object="answerChoice"></input> <span
-                ng-bind="answerChoice.text"></span>
 
-        </div>
-        <question-submit click="ajaxCall"></question-submit>
-    </question>
-    <br>
 
-    <div>Diagnostic Mode multi select</div>
-    <question>
-        <div ng-bind="questionStem"></div>
-        <div ng-repeat="answerChoice in answerChoices">
-            <input type='checkbox' name='two' multi-select-answer answer-object="answerChoice"></input> <span
-                ng-bind="answerChoice.text" is-correct=”answerChoice.isCorrect”></span>
-
-        </div>
-        <question-submit click="ajaxCall"></question-submit>
-    </question>
 </div>
-
-
 
 
 <script>
@@ -44,36 +22,12 @@
 
     'use strict';
 
-    var app = angular.module('app', []).
-            controller('ctl', function ($scope) {
-                $scope.ajaxCall = function (x) {
-                    console.log('making ajax call with ' + JSON.stringify(x));
-                };
+    var app = angular.module('app', [])
 
-                $scope.questionStem = "Question: How many days are in a week?";
+            .controller('ctl', function ($scope) {
+            })
 
-                $scope.answerChoices = [];
-
-                $scope.answerChoices.push({
-                    text: 'seven',
-                    isCorrect: true
-                });
-                $scope.answerChoices.push({
-                    text: 'one',
-                    isCorrect: false
-                });
-                $scope.answerChoices.push({
-                    text: 'three',
-                    isCorrect: false
-                });
-                $scope.answerChoices.push({
-                    text: 'five',
-                    isCorrect: false
-                });
-
-
-            }).
-            directive('question', function () {
+            .directive('question', function () {
                 return {
                     restrict: 'EA',
                     transclude: true,
@@ -84,8 +38,9 @@
                         vm.selected;
                     }
                 }
-            }).
-            directive('singleSelectAnswer', function () {
+            })
+
+            .directive('singleSelectAnswer', function () {
                 return {
                     restrict: 'EA',
                     replace: false,
@@ -99,51 +54,8 @@
                         });
                     }
                 }
-            }).
-            directive('multiSelectAnswer', function () {
-                return {
-                    restrict: 'EA',
-                    replace: false,
-                    require: '^question',
-                    template: '<div></div>',
-                    scope: {
-                        answerObject: '='
-                    },
-                    link: function (scope, element, attrs, ctrl) {
+            })
 
-                        //in context of multiSelectAnswer ctrl.selected  must be defined as array
-                        ctrl.selected = [];
-
-                        element.on('click', function (e) {
-
-                            var indexInArray = _.indexOf(ctrl.selected, scope.answerObject);
-
-                            if (indexInArray > -1) {
-                                ctrl.selected.splice(indexInArray, 1);
-                            } else {
-                                ctrl.selected.push(scope.answerObject);
-                            }
-
-                        });
-                    }
-                }
-            }).
-            directive('questionSubmit', function () {
-                return {
-                    restrict: 'EA',
-                    replace: true,
-                    template: '<button>Submit</button>',
-                    require: '^question',
-                    scope: {
-                        click: '&'
-                    },
-                    link: function (scope, element, attrs, ctrl) {
-                        element.on('click', function (e) {
-                            scope.click()(ctrl.selected);
-                        });
-                    }
-                }
-            });
 
 </script>
 
