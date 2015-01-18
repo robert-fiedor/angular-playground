@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<link rel="stylesheet" type="text/css" href="../../atomUI-distributable.css" media="screen" />-->
+    <script src="lib/less/less.min.js" type="text/javascript"></script>
+    <script src="lib/underscore.js" type="text/javascript"></script>
+</head>
+
+<body ng-app="app">
+
+    <note message="hello"></note>
+    <pad message="sweet"></pad>
+
+<script src="/lib/angular/angular.js"></script>
+
+<script>
+
+    angular.module("app", [])
+            .directive("note", function note() {
+                return {
+                    scope: {
+                        message: "@"
+                    },
+                    bindToController: true,
+                    controller: "NoteCtrl as note",
+                    template: "<div>{{note.message}}</div>"
+                };
+            })
+
+            .controller("NoteCtrl", function NoteCtrl() {
+                var note = this;
+            })
+
+            .directive("pad", function pad() {
+                return {
+                    scope: {
+                        message: "@"
+                    },
+                    bindToController: true,
+                    controller: "PadCtrl as pad",
+                    template: "<div>{{pad.message}}</div>"
+                };
+            })
+
+            .controller("PadCtrl", function PadCtrl() {
+                var pad = this;
+            });
+
+
+</script>
+
+
+</body>
+</html>
